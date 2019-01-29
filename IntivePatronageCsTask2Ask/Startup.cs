@@ -22,6 +22,7 @@ namespace IntivePatronageCsTask2Ask {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.Configure<FizzBuzzAskSettings>(Configuration.GetSection("FizzBuzzAskSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

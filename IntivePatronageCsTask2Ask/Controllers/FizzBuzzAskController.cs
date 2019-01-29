@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,6 +12,12 @@ namespace IntivePatronageCsTask2Ask.Controllers
     [ApiController]
     public class FizzBuzzAskController : Controller
     {
+        private readonly IOptions<FizzBuzzAskSettings> _settings;
+
+        public FizzBuzzAskController(IOptions<FizzBuzzAskSettings> settings)
+        {
+            _settings = settings;
+        }
         /// <summary>
         /// Access the FizzBuzz Get controller from the main project 
         /// </summary>
@@ -22,7 +29,7 @@ namespace IntivePatronageCsTask2Ask.Controllers
             string reply = String.Empty;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:5000/FizzBuzz/"+fizzNumber);
+                client.BaseAddress = new Uri(_settings.Value.Url + fizzNumber);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
 
@@ -36,7 +43,10 @@ namespace IntivePatronageCsTask2Ask.Controllers
                     }
                 }
             }
-            return View(reply);
+            return Ok(reply);
         }
+
+       
+
     }
 }
